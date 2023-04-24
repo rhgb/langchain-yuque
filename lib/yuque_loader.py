@@ -33,12 +33,14 @@ class YuqueLoader(BaseLoader):
                 group_id = user["id"]
                 response = requests.get(f"{self.url}/api/v2/groups/{group_id}/repos?type=Book", headers=headers)
                 repos = response.json()["data"]
+                print(f"Loading from {len(repos)} repos...")
                 for repo in repos:
                     repo_ids.append(repo["namespace"])
 
             for repo_id in repo_ids:
                 response = requests.get(f"{self.url}/api/v2/repos/{repo_id}/docs", headers=headers)
                 docs = response.json()["data"]
+                print(f"Loading from {len(docs)} docs in {repo_id}...")
                 for doc in docs:
                     doc_ids.append((repo_id, doc['slug']))
 
@@ -47,6 +49,7 @@ class YuqueLoader(BaseLoader):
             doc_response = requests.get(f"{self.url}/api/v2/repos/{repo_id}/docs/{doc_id}", headers=headers)
             doc = doc_response.json()["data"]
             if doc["format"] == "lake":
+                print(f"Loading lake doc {doc['title']}")
                 soup = BeautifulSoup(doc["body_html"], features="html5lib")
                 content = soup.get_text()
 
