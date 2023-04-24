@@ -32,7 +32,7 @@ class YuqueLoader(BaseLoader):
                 assert user["type"] == "Group", "User is not a group"
                 group_id = user["id"]
                 response = requests.get(f"{self.url}/api/v2/groups/{group_id}/repos?type=Book", headers=headers)
-                repos = response.json()
+                repos = response.json()["data"]
                 for repo in repos:
                     repo_ids.append(repo["namespace"])
 

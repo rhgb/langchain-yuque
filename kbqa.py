@@ -15,7 +15,7 @@ def load_docs():
         token=os.environ["YUQUE_API_TOKEN"],
         user_agent="kbqa",
     )
-    documents = loader.load(repo_ids=["hqtk2d/xzfg1a"])
+    documents = loader.load()
     text_splitter = TokenTextSplitter(chunk_size=6000, chunk_overlap=0)
     docs = text_splitter.split_documents(documents)
     return docs
