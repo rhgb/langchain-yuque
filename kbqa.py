@@ -16,7 +16,7 @@ def load_docs():
         user_agent="kbqa",
     )
     documents = loader.load()
-    text_splitter = TokenTextSplitter(chunk_size=6000, chunk_overlap=0)
+    text_splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=0)
     docs = text_splitter.split_documents(documents)
     return docs
 
