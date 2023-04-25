@@ -3,6 +3,7 @@ from langchain.document_loaders.base import BaseLoader
 import requests
 from typing import List, Optional, Dict, Union
 from bs4 import BeautifulSoup
+from bs4.element import NavigableString, Tag
 
 
 class YuqueLoader(BaseLoader):
@@ -51,7 +52,36 @@ class YuqueLoader(BaseLoader):
             if doc["format"] == "lake":
                 print(f"Loading lake doc {doc['title']}")
                 soup = BeautifulSoup(doc["body_html"], features="html5lib")
-                content = soup.get_text()
+
+                # iterate over soup.children recursively
+                iter_context = {
+                    "in_table": False,
+                }
+
+                def iter_children(tag):
+                    for child in tag.children:
+                        if type(child) is NavigableString:
+                            yield child
+                        elif type(child) is Tag:
+                            if child.name == "table":
+                                iter_context["in_table"] = True
+                            yield from iter_children(child)
+                            # if tag is block element and not in table, add newline
+                            if child.name in ["div", "p", "h1", "h2", "h3", "h4", "h5", "h6", "li",
+                                              "blockquote", "hr", "br", "pre"]:
+                                if not iter_context["in_table"]:
+                                    yield "\n"
+                            # if tag is table row, add newline
+                            elif child.name == "tr":
+                                yield "\n"
+                            # if tag is table cell, add tab
+                            elif child.name in ["td", "th"]:
+                                yield "\t"
+                            if child.name == "table":
+                                iter_context["in_table"] = False
+
+                # iter_children and join text
+                content = "".join([str(child) for child in iter_children(soup)])
 
                 metadata: Dict[str, Union[str, None]] = {
                     "title": doc["title"],

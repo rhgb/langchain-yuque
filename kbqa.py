@@ -1,21 +1,19 @@
 import os
 import pinecone
-from langchain import OpenAI
 from langchain.chains import RetrievalQA
-
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import TokenTextSplitter
 from langchain.vectorstores import Pinecone
 from lib.yuque_loader import YuqueLoader
 
 
-def load_docs():
+def load_docs(**kwargs):
     loader = YuqueLoader(
         url=os.environ["YUQUE_BASE_URL"],
         token=os.environ["YUQUE_API_TOKEN"],
         user_agent="kbqa",
     )
-    documents = loader.load()
+    documents = loader.load(**kwargs)
     text_splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=0)
     docs = text_splitter.split_documents(documents)
     return docs
@@ -32,6 +30,8 @@ def embed_docs(docs):
 
 
 def create_qa():
+    from langchain import OpenAI
+
     pinecone.init(
         api_key=os.environ["PINECONE_API_KEY"],
         environment=os.environ["PINECONE_ENVIRONMENT"],
