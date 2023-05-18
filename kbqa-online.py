@@ -29,9 +29,12 @@ def embed_docs(docs):
     Pinecone.from_documents(docs, embeddings, index_name=index_name)
 
 
-def create_qa():
+def create_openai_llm():
     from langchain import OpenAI
+    return OpenAI()
 
+
+def create_qa(llm):
     pinecone.init(
         api_key=os.environ["PINECONE_API_KEY"],
         environment=os.environ["PINECONE_ENVIRONMENT"],
@@ -40,12 +43,12 @@ def create_qa():
     embeddings = OpenAIEmbeddings()
     docsearch = Pinecone.from_existing_index(index_name, embeddings)
     retriever = docsearch.as_retriever()
-    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=retriever)
+    qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
     return qa
 
 
 if __name__ == "__main__":
-    qa = create_qa()
+    qa = create_qa(create_openai_llm())
     # read question from stdin and print answer repeatedly
     while True:
         question = input("Question: ")
