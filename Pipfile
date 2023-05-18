@@ -13,6 +13,7 @@ pinecone-client = "*"
 tiktoken = "*"
 html5lib = "*"
 qdrant-client = "*"
+transformers = "*"
 
 [dev-packages]
 
