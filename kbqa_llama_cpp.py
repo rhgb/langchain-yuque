@@ -37,7 +37,7 @@ def create_qa():
     from langchain.llms import LlamaCpp
     embeddings = LlamaCppEmbeddings(model_path=__globals["model_path"])
     qdrant = Qdrant(client=qdrant_client.QdrantClient(url="localhost:6334", prefer_grpc=True),
-                    collection_name="maxtropy_yuque",
+                    collection_name="yuque",
                     embeddings=embeddings)
     retriever = qdrant.as_retriever()
     llm = LlamaCpp(model_path=__globals["model_path"])
