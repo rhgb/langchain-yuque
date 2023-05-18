@@ -12,6 +12,7 @@ openai = "*"
 pinecone-client = "*"
 tiktoken = "*"
 html5lib = "*"
+qdrant-client = "*"
 
 [dev-packages]
 
