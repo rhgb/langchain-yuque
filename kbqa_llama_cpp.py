@@ -8,7 +8,6 @@ from lib.yuque_loader import YuqueLoader
 
 
 def load_docs(**kwargs):
-    from transformers import LlamaTokenizer
     loader = YuqueLoader(
         url=os.environ["YUQUE_BASE_URL"],
         token=os.environ["YUQUE_API_TOKEN"],
