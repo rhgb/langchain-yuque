@@ -15,7 +15,7 @@ def load_docs(**kwargs):
         user_agent="kbqa",
     )
     documents = loader.load(**kwargs)
-    text_splitter = CharacterTextSplitter(
+    text_splitter = CharacterTextSplitter.from_huggingface_tokenizer(
         LlamaTokenizer.from_pretrained(os.environ["LLAMA_MODEL_PATH"]),
         chunk_size=1000,
         chunk_overlap=100,
