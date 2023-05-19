@@ -27,7 +27,7 @@ def embed_docs(docs):
     embeddings = LlamaCppEmbeddings(model_path=os.environ["LLAMA_CPP_MODEL_PATH"])
     Qdrant.from_documents(
         docs, embeddings,
-        url=os.environ["QDRANT_GRPC_URL"], prefer_grpc=True,
+        host=os.environ["QDRANT_HOST"], prefer_grpc=True,
         collection_name="maxtropy_yuque",
     )
 
@@ -36,7 +36,7 @@ def create_qa():
     import qdrant_client
     from langchain.llms import LlamaCpp
     embeddings = LlamaCppEmbeddings(model_path=os.environ["LLAMA_CPP_MODEL_PATH"])
-    qdrant = Qdrant(client=qdrant_client.QdrantClient(url=os.environ["QDRANT_GRPC_URL"], prefer_grpc=True),
+    qdrant = Qdrant(client=qdrant_client.QdrantClient(host=os.environ["QDRANT_HOST"], prefer_grpc=True),
                     collection_name="yuque",
                     embeddings=embeddings)
     retriever = qdrant.as_retriever()
