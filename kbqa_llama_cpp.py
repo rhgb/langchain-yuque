@@ -16,7 +16,7 @@ def load_docs(**kwargs):
     )
     documents = loader.load(**kwargs)
     text_splitter = CharacterTextSplitter(
-        tokenizer=LlamaTokenizer.from_pretrained(os.environ["LLAMA_MODEL_PATH"]),
+        LlamaTokenizer.from_pretrained(os.environ["LLAMA_MODEL_PATH"]),
         chunk_size=1000,
         chunk_overlap=100,
     )
