@@ -2,7 +2,7 @@ import os
 
 from langchain.chains import RetrievalQA
 from langchain.embeddings import LlamaCppEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import TokenTextSplitter
 from langchain.vectorstores import Qdrant
 from lib.yuque_loader import YuqueLoader
 
@@ -15,8 +15,7 @@ def load_docs(**kwargs):
         user_agent="kbqa",
     )
     documents = loader.load(**kwargs)
-    text_splitter = CharacterTextSplitter.from_huggingface_tokenizer(
-        LlamaTokenizer.from_pretrained(os.environ["LLAMA_MODEL_PATH"]),
+    text_splitter = TokenTextSplitter(
         chunk_size=1000,
         chunk_overlap=100,
     )
