@@ -15,8 +15,8 @@ def load_docs(**kwargs):
     )
     documents = loader.load(**kwargs)
     text_splitter = TokenTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=100,
+        chunk_size=800,
+        chunk_overlap=50,
     )
     docs = text_splitter.split_documents(documents)
     return docs
@@ -27,7 +27,7 @@ def embed_docs(docs):
     Qdrant.from_documents(
         docs, embeddings,
         host=os.environ["QDRANT_HOST"], prefer_grpc=True,
-        collection_name="maxtropy_yuque",
+        collection_name="yuque",
     )
 
 
