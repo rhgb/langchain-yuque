@@ -39,7 +39,7 @@ def create_qa():
                     collection_name="yuque",
                     embeddings=embeddings)
     retriever = qdrant.as_retriever()
-    llm = LlamaCpp(model_path=os.environ["LLAMA_CPP_MODEL_PATH"])
+    llm = LlamaCpp(model_path=os.environ["LLAMA_CPP_MODEL_PATH"], n_ctx=2048)
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
     return qa
 
